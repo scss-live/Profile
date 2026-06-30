@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saurav Singh — WordPress &amp; PHP Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0B0F14;
+    --panel: #121821;
+    --panel-2: #161D27;
+    --line: #232C38;
+    --text: #DCE3EA;
+    --muted: #7C8A9A;
+    --amber: #E8A33D;
+    --teal: #4FD1AE;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    background-image:
+      radial-gradient(circle at 15% 0%, rgba(232,163,61,0.07), transparent 40%),
+      radial-gradient(circle at 85% 20%, rgba(79,209,174,0.06), transparent 40%);
+    pointer-events:none;
+    z-index:0;
+  }
+  a{color:inherit;text-decoration:none;}
+  ::selection{background:var(--amber);color:#0B0F14;}
+  :focus-visible{outline:2px solid var(--amber);outline-offset:3px;}
+
+  .wrap{max-width:1040px;margin:0 auto;padding:0 28px;position:relative;z-index:1;}
+
+  /* NAV */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(11,15,20,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;}
+  .brand{font-family:var(--mono);font-weight:700;font-size:15px;color:var(--text);}
+  .brand span{color:var(--amber);}
+  .navlinks{display:flex;gap:28px;font-family:var(--mono);font-size:13px;color:var(--muted);}
+  .navlinks a:hover{color:var(--amber);}
+  @media (max-width:640px){.navlinks{display:none;}}
+
+  /* HERO */
+  header.hero{padding:90px 0 60px;border-bottom:1px solid var(--line);}
+  .prompt-line{
+    font-family:var(--mono);font-size:14px;color:var(--teal);
+    margin-bottom:18px;display:flex;align-items:center;gap:8px;
+  }
+  .prompt-line .cursor{
+    display:inline-block;width:8px;height:16px;background:var(--amber);
+    animation:blink 1s step-end infinite;
+  }
+  @keyframes blink{50%{opacity:0;}}
+  h1{
+    font-family:var(--mono);
+    font-weight:800;
+    font-size:clamp(34px,5.5vw,56px);
+    line-height:1.1;
+    letter-spacing:-0.5px;
+    color:#fff;
+  }
+  h1 .accent{color:var(--amber);}
+  .role{
+    margin-top:14px;font-size:18px;color:var(--muted);max-width:560px;
+  }
+  .hero-actions{display:flex;gap:14px;margin-top:32px;flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono);font-size:13px;font-weight:500;
+    padding:12px 22px;border-radius:6px;border:1px solid var(--line);
+    transition:all .15s ease;
+  }
+  .btn-primary{background:var(--amber);color:#0B0F14;border-color:var(--amber);}
+  .btn-primary:hover{background:#f5b85a;}
+  .btn-ghost{color:var(--text);}
+  .btn-ghost:hover{border-color:var(--amber);color:var(--amber);}
+
+  /* STATUS PANEL (signature element) */
+  .console{
+    margin-top:48px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .console-bar{
+    display:flex;align-items:center;gap:8px;
+    padding:10px 14px;border-bottom:1px solid var(--line);
+    background:var(--panel-2);
+  }
+  .dot{width:9px;height:9px;border-radius:50%;}
+  .dot.r{background:#E8675F;} .dot.y{background:#E8C13D;} .dot.g{background:#4FD17C;}
+  .console-bar span{
+    font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:8px;
+  }
+  .stat-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);
+  }
+  .stat{
+    padding:20px 18px;border-right:1px solid var(--line);
+  }
+  .stat:last-child{border-right:none;}
+  .stat .label{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;}
+  .stat .value{font-family:var(--mono);font-size:26px;font-weight:700;color:var(--teal);margin-top:6px;}
+  @media (max-width:640px){
+    .stat-grid{grid-template-columns:repeat(2,1fr);}
+    .stat:nth-child(2){border-right:none;}
+    .stat{border-bottom:1px solid var(--line);}
+  }
+
+  /* SECTIONS */
+  section{padding:70px 0;border-bottom:1px solid var(--line);}
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;color:var(--amber);
+    text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;
+  }
+  h2{font-family:var(--mono);font-size:28px;color:#fff;margin-bottom:34px;}
+
+  /* ABOUT */
+  .about-text{max-width:680px;color:var(--text);font-size:16px;}
+  .about-text p + p{margin-top:14px;}
+
+  /* EXPERIENCE */
+  .job{
+    display:grid;grid-template-columns:170px 1fr;gap:24px;
+    padding:26px 0;border-top:1px solid var(--line);
+  }
+  .job:first-of-type{border-top:none;}
+  .job-meta{font-family:var(--mono);font-size:12px;color:var(--muted);}
+  .job-meta .dates{color:var(--teal);display:block;margin-bottom:6px;}
+  .job-role{font-size:17px;font-weight:600;color:#fff;}
+  .job-company{font-family:var(--mono);font-size:13px;color:var(--amber);margin-bottom:10px;}
+  .job ul{margin-top:8px;padding-left:18px;color:var(--muted);font-size:14.5px;}
+  .job ul li{margin-bottom:6px;}
+  .job ul li::marker{color:var(--amber);}
+  @media (max-width:640px){.job{grid-template-columns:1fr;}}
+
+  /* SKILLS */
+  .skill-groups{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .skill-card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:20px;}
+  .skill-card h3{font-family:var(--mono);font-size:12px;color:var(--amber);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font-family:var(--mono);font-size:12px;color:var(--text);
+    background:var(--panel-2);border:1px solid var(--line);
+    padding:6px 10px;border-radius:5px;
+  }
+  @media (max-width:760px){.skill-groups{grid-template-columns:1fr;}}
+
+  /* PROJECTS */
+  .projects{display:grid;grid-template-columns:1fr;gap:18px;}
+  .project{
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:26px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start;
+    transition:border-color .15s ease;
+  }
+  .project:hover{border-color:var(--amber);}
+  .project h3{font-size:18px;color:#fff;margin-bottom:6px;}
+  .project .tag{font-family:var(--mono);font-size:10px;color:var(--teal);text-transform:uppercase;letter-spacing:0.08em;}
+  .project p{color:var(--muted);font-size:14.5px;margin-top:8px;max-width:560px;}
+  .project .stack{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;}
+  .project .stack span{font-family:var(--mono);font-size:11px;color:var(--muted);border:1px solid var(--line);padding:4px 8px;border-radius:4px;}
+  .project-link{font-family:var(--mono);font-size:12px;color:var(--amber);white-space:nowrap;border:1px solid var(--line);padding:8px 14px;border-radius:6px;}
+  .project-link:hover{border-color:var(--amber);}
+  @media (max-width:640px){.project{grid-template-columns:1fr;}}
+
+  /* EDUCATION */
+  .edu-row{display:flex;justify-content:space-between;padding:18px 0;border-top:1px solid var(--line);font-size:15px;}
+  .edu-row:first-of-type{border-top:none;}
+  .edu-row .deg{color:#fff;font-weight:600;}
+  .edu-row .school{color:var(--muted);font-family:var(--mono);font-size:13px;}
+  .edu-row .yr{font-family:var(--mono);font-size:13px;color:var(--teal);}
+
+  /* CONTACT */
+  footer{padding:80px 0 60px;text-align:center;}
+  footer .eyebrow{justify-content:center;}
+  footer h2{font-size:32px;}
+  .contact-list{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-top:24px;font-family:var(--mono);font-size:14px;}
+  .contact-list a:hover{color:var(--amber);}
+  .copyright{margin-top:60px;font-family:var(--mono);font-size:12px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">saurav<span>.</span>singh</div>
+    <div class="navlinks">
+      <a href="#about">about</a>
+      <a href="#experience">experience</a>
+      <a href="#skills">skills</a>
+      <a href="#projects">projects</a>
+      <a href="#contact">contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="prompt-line">savrav@server:~$ whoami<span class="cursor"></span></div>
+    <h1>Saurav Singh<br>builds &amp; runs <span class="accent">WordPress</span> products end-to-end.</h1>
+    <p class="role">PHP / WordPress / Elementor developer who owns the whole stack — custom theme &amp; plugin code, AWS server provisioning, security hardening, and the SEO that gets the site found. Currently building Savvy HRMS from the ground up.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#contact">Get in touch</a>
+      <a class="btn btn-ghost" href="#projects">See the work</a>
+    </div>
+
+    <div class="console">
+      <div class="console-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span>status — uptime monitor</span>
+      </div>
+      <div class="stat-grid">
+        <div class="stat"><div class="label">Experience</div><div class="value">3+ yrs</div></div>
+        <div class="stat"><div class="label">Sites shipped</div><div class="value">20+</div></div>
+        <div class="stat"><div class="label">Stack</div><div class="value">PHP/WP</div></div>
+        <div class="stat"><div class="label">Server</div><div class="value">AWS</div></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="eyebrow">// about</div>
+    <h2>$ cat about.md</h2>
+    <div class="about-text">
+      <p>I'm a web developer based in Noida, working across the full lifecycle of WordPress products — from first line of PHP to the server it runs on. At Savvy HRMS I built the company's site from scratch, provisioned and secured the AWS Lightsail instance it runs on, and now lead the SEO strategy that brings it traffic.</p>
+      <p>Before that, I spent time at Getnow Solutions and Global Trendz building 20+ responsive sites, converting Figma and PSD designs into pixel-perfect, performance-tuned pages, and getting comfortable with everything from Core Web Vitals to database-level bug fixes.</p>
+      <p>I like owning things end-to-end: code, server, security, and the search rankings that follow.</p>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="eyebrow">// experience</div>
+    <h2>$ tail -f work_history.log</h2>
+
+    <div class="job">
+      <div class="job-meta"><span class="dates">May 2025 — Present</span>Noida, UP</div>
+      <div>
+        <div class="job-role">Web Developer / Technical Manager</div>
+        <div class="job-company">Savvy HRMS</div>
+        <ul>
+          <li>Built the company website from scratch — architecture, theme development, custom PHP, and full deployment, independently.</li>
+          <li>Provisioned and manage the live AWS Lightsail server: instance config, SSL, DNS, security hardening, and routine maintenance.</li>
+          <li>Own the full website lifecycle with zero dependency on external vendors.</li>
+          <li>Lead the SEO team — technical strategy, audits, on-page optimization, schema markup, and link-building.</li>
+          <li>Diagnose and resolve plugin conflicts, database errors, and theme-level bugs to keep uptime stable.</li>
+          <li>Drive performance work: Core Web Vitals, caching, image compression, script deferral, GTmetrix benchmarking.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="job-meta"><span class="dates">Sep 2024 — Apr 2025</span></div>
+      <div>
+        <div class="job-role">Web Developer</div>
+        <div class="job-company">Getnow Solutions</div>
+        <ul>
+          <li>Built responsive, engaging websites with HTML, CSS, JavaScript, and React.</li>
+          <li>Developed and customized WordPress sites to meet client requirements.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="job-meta"><span class="dates">Mar 2023 — Jul 2024</span></div>
+      <div>
+        <div class="job-role">PHP Developer / Web Designer</div>
+        <div class="job-company">Global Trendz</div>
+        <ul>
+          <li>Developed and maintained WordPress sites with Elementor, PHP, HTML, CSS, and JavaScript, including custom plugins and themes.</li>
+          <li>Designed and built 20+ responsive websites with pixel-perfect accuracy from Figma and PSD.</li>
+          <li>Optimized for speed, Core Web Vitals, GTmetrix, and SEO, including structured data and schema markup.</li>
+          <li>Managed hosting, migrations, AWS configuration, debugging, and security fixes.</li>
+          <li>Translated Figma/PSD designs into live, mobile-responsive Elementor builds.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="eyebrow">// skills</div>
+    <h2>$ ls -la stack/</h2>
+    <div class="skill-groups">
+      <div class="skill-card">
+        <h3>Development</h3>
+        <div class="chips">
+          <span class="chip">PHP (Advanced)</span>
+          <span class="chip">WordPress</span>
+          <span class="chip">Elementor</span>
+          <span class="chip">MySQL</span>
+          <span class="chip">JavaScript</span>
+          <span class="chip">HTML / CSS</span>
+          <span class="chip">Bootstrap</span>
+          <span class="chip">React</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>Infrastructure</h3>
+        <div class="chips">
+          <span class="chip">AWS Lightsail / Bitnami</span>
+          <span class="chip">SSL / DNS</span>
+          <span class="chip">Security Hardening</span>
+          <span class="chip">Core Web Vitals</span>
+          <span class="chip">GTmetrix</span>
+          <span class="chip">Rank Math SEO</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>Foundations</h3>
+        <div class="chips">
+          <span class="chip">C / C++</span>
+          <span class="chip">Figma → Code</span>
+          <span class="chip">Project Management</span>
+          <span class="chip">Critical Thinking</span>
+          <span class="chip">Leadership</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="eyebrow">// projects</div>
+    <h2>$ git log --oneline --graph</h2>
+    <div class="projects">
+
+      <div class="project">
+        <div>
+          <span class="tag">Live Product</span>
+          <h3>Savvy HRMS Tools</h3>
+          <p>An HR tools platform built on custom WordPress plugin architecture — salary calculator with CTC &amp; Basic Salary modes, multi-slab TDS logic, ESI handling, gratuity and PF/ESI calculators, and payslip generation.</p>
+          <div class="stack"><span>PHP</span><span>WordPress</span><span>MySQL</span><span>Rank Math SEO</span></div>
+        </div>
+        <a class="project-link" href="https://savvyhrms.com" target="_blank" rel="noopener">Visit site →</a>
+      </div>
+
+      <div class="project">
+        <div>
+          <span class="tag">Infrastructure</span>
+          <h3>AWS Server &amp; Security Ownership</h3>
+          <p>Full ownership of the Savvy HRMS production server on AWS — provisioning, SSL/DNS, and a hands-on security audit that traced and remediated a real-world intrusion (webshell + rogue admin account) end to end.</p>
+          <div class="stack"><span>AWS Lightsail</span><span>Bitnami</span><span>WordPress Security</span></div>
+        </div>
+      </div>
+
+      <div class="project">
+        <div>
+          <span class="tag">E-commerce</span>
+          <h3>LocalShop — Hero &amp; CTA Build</h3>
+          <p>Designed and built a WordPress e-commerce hero section and pre-footer CTA component, optimized for SEO and conversion from the ground up.</p>
+          <div class="stack"><span>WordPress</span><span>Elementor</span><span>CSS</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="eyebrow">// education</div>
+    <h2>$ cat education.json</h2>
+    <div class="edu-row">
+      <div><div class="deg">Master of Computer Application</div><div class="school">IGNOU</div></div>
+      <div class="yr">2024 — Pursuing</div>
+    </div>
+    <div class="edu-row">
+      <div><div class="deg">Bachelor of Computer Application</div><div class="school">IGNOU</div></div>
+      <div class="yr">2019 — 2023</div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="eyebrow">// contact</div>
+    <h2>$ ./get_in_touch.sh</h2>
+    <p style="color:var(--muted);max-width:480px;margin:0 auto;">Open to web development &amp; technical management roles, freelance WordPress builds, and server/security audits.</p>
+    <div class="contact-list">
+      <a href="mailto:sc.ss897@gmail.com">sc.ss897@gmail.com</a>
+      <a href="tel:+917053068424">+91 7053 06 8424</a>
+      <a href="https://scss.live" target="_blank" rel="noopener">scss.live</a>
+    </div>
+    <div class="copyright">Sec-12, Noida, UP-201309 · © 2026 Saurav Singh</div>
+  </div>
+</footer>
+
+</body>
+</html>
